@@ -5,7 +5,15 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JToggleButton;
 
@@ -71,14 +79,14 @@ public class frmFunctions extends javax.swing.JFrame {
         pnlFunctions.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 44, 226), 2, true), "Funciones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18), new java.awt.Color(74, 44, 226))); // NOI18N
 
         lstFunctions.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = { "The Matrix", "Pulp Fiction", "Casablanca", "Back to the Future", "El padrino", " " };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane1.setViewportView(lstFunctions);
 
         lstSchedule.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = { "12:00" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -280,7 +288,8 @@ public class frmFunctions extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblCheckMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCheckMouseClicked
-        System.out.println(buttonsArray.get(2).getBackground());
+        Connect connect=new Connect();
+        connect.showGate();
     }//GEN-LAST:event_lblCheckMouseClicked
 
     private void lblCheckMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCheckMouseEntered
@@ -303,7 +312,7 @@ public class frmFunctions extends javax.swing.JFrame {
         int seatCounter=1;
         buttonsArray=new ArrayList<>();
         Button button;
-        for(int i=0;i<totalButtons;i++){
+        for(int i=1;i<totalButtons;i++){
                if((seatCounter!=25)&&(seatCounter!=30)){
                    button= new Button(i);
                    
@@ -363,6 +372,8 @@ public class frmFunctions extends javax.swing.JFrame {
                          btn.setForeground(Color.blue);
                          btn.setBackground(new Color(39,122,241));
                          btn.setText("Reservado");
+                         connect=new Connect();
+                         connect.reserve(btn.getId());
                     }
                     else{
                         btn.setBackground(new Color(29, 174, 51));
@@ -370,6 +381,7 @@ public class frmFunctions extends javax.swing.JFrame {
                         btn.setForeground(new Color(29, 114, 51));
                         btn.setText("Asiento "+btn.getId());
                         System.out.println(btn.getBackground());
+                        connect.liberate(btn.getId());
                     }
                     
                 }
@@ -379,7 +391,7 @@ public class frmFunctions extends javax.swing.JFrame {
     }
 //    private java.awt.Dimension dim=new java.awt.Dimension(/*947*/1000, 650/*608*/);
     private java.awt.Dimension dim=new java.awt.Dimension(967, 648);
-    
+    private Connect connect;
     private ArrayList<Button> buttonsArray;
     private final int totalButtons=29;
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -404,4 +416,96 @@ public class frmFunctions extends javax.swing.JFrame {
     private javax.swing.JPanel pnlSeats;
     private javax.swing.JPanel pnlSeats2;
     // End of variables declaration//GEN-END:variables
+
+
+    
+    public class Connect {
+        public Connect(){
+//            try {
+//                Connection myConn=DriverManager.getConnection(link, user, pass);
+//                String sentence="SELECT * FROM the_matrix WHERE seat=? ";
+//                PreparedStatement myPst=myConn.prepareStatement(sentence);
+//                myPst.setString(1,"30");
+//                myPst.setString(2, "no");
+//                ResultSet myRs=myPst.executeQuery();
+//                while(myRs.next()){
+//                    System.out.println(myRs.getString(1)+myRs.getString(2)+myRs.getString(3));
+//                }
+//                myRs.close();
+//                myConn.close();
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+        }
+//        public  Connection connect(){
+//             myConn=null;
+//            try {
+//               myConn= DriverManager.getConnection(link, user, pass);
+//                System.out.println("Conexión establecida");
+//                
+//            }catch(SQLException ex){
+//                
+//            }
+//            return myConn;
+//        } 
+        
+        
+        public void showGate(){
+        
+        }
+        
+        public void reserve(int seat){
+            try {
+               myConn= DriverManager.getConnection(link, user, pass);
+                System.out.println("Conexión establecida");
+               String query="UPDATE back_to_the_future SET reserved='si' WHERE seat="+seat;
+            myPS= myConn.prepareStatement(query);
+            int x=myPS.executeUpdate();
+            if(x>0) System.out.println("se actualizó");
+            else System.out.println("Hubo un error al actualizar");
+                
+            }catch(SQLException ex){
+                
+            }finally{
+                try {
+                    myConn.close();
+                    myPS.close();
+                    System.out.println("Conexion y Consulta cerrados");
+                } catch (SQLException ex) {
+                    Logger.getLogger(frmFunctions.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+            
+        }
+        public void liberate(int seat){
+            try {
+               myConn= DriverManager.getConnection(link, user, pass);
+                System.out.println("Conexión establecida");
+               String query="UPDATE back_to_the_future SET reserved='no' WHERE seat="+seat;
+            myPS= myConn.prepareStatement(query);
+            int x=myPS.executeUpdate();
+            if(x>0) System.out.println("se actualizó");
+            else System.out.println("Hubo un error al actualizar");
+                
+            }catch(SQLException ex){
+                
+            }finally{
+                try {
+                    myConn.close();
+                    myPS.close();
+                    System.out.println("Conexion y Consulta cerrados");
+                } catch (SQLException ex) {
+                    Logger.getLogger(frmFunctions.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+            
+        }
+        
+        private PreparedStatement myPS;
+        private Connection myConn;
+        String user="ChecoDB", pass="ChecoReyes23", link="jdbc:mysql://localhost:3307/cinema";
+    }
+    
 }
