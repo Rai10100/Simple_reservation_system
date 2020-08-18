@@ -15,23 +15,22 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
-
 
 public class frmFunctions extends javax.swing.JFrame {
 
     public frmFunctions() {
         initComponents();
-        
         this.setMinimumSize(dim);
         setSize(dim);
-        
-        
         Image principalIco=Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Images/popcornIco.png"));
         setIconImage(principalIco);
         setTitle("RaíCinema");
         setLocationRelativeTo(null);
-        buttonGenerator();
+//        buttonGenerator();
+//        connect=new Connect();
+//        connect.update();
     }
 
  
@@ -79,7 +78,7 @@ public class frmFunctions extends javax.swing.JFrame {
         pnlFunctions.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 44, 226), 2, true), "Funciones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18), new java.awt.Color(74, 44, 226))); // NOI18N
 
         lstFunctions.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "The Matrix", "Pulp Fiction", "Casablanca", "Back to the Future", "El padrino", " " };
+            String[] strings = { "The Matrix", "Pulp Fiction", "Casablanca", "Back to the Future", "El padrino" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -158,7 +157,7 @@ public class frmFunctions extends javax.swing.JFrame {
         lblScheduleAns.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblScheduleAns.setText("N/A");
 
-        lblReserve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/reserveIco.png"))); // NOI18N
+        lblReserve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/printIco.png"))); // NOI18N
         lblReserve.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lblReserveMouseEntered(evt);
@@ -288,8 +287,21 @@ public class frmFunctions extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblCheckMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCheckMouseClicked
-        Connect connect=new Connect();
-        connect.showGate();
+        if (lstFunctions.isSelectionEmpty() || lstSchedule.isSelectionEmpty()) JOptionPane.showMessageDialog(this,"Por favor seleccione una función y un horario","-- SIN DATOS --",2);
+        else {
+            lblMovieAns.setText(lstFunctions.getSelectedValue());
+            lblScheduleAns.setText(lstSchedule.getSelectedValue());
+            movie=((lstFunctions.getSelectedValue()).toLowerCase()).replace(" ", "_");
+//            System.out.println(movie);
+            if(firstTime){
+                buttonGenerator();
+                firstTime=false;
+            }
+            
+            connect=new Connect();
+            connect.update();
+            
+        }
     }//GEN-LAST:event_lblCheckMouseClicked
 
     private void lblCheckMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCheckMouseEntered
@@ -301,11 +313,11 @@ public class frmFunctions extends javax.swing.JFrame {
     }//GEN-LAST:event_lblCheckMouseExited
 
     private void lblReserveMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblReserveMouseEntered
-        lblReserve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/reserveIcoDark.png")));
+        lblReserve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/printIcoDark.png")));
     }//GEN-LAST:event_lblReserveMouseEntered
 
     private void lblReserveMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblReserveMouseExited
-        lblReserve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/reserveIco.png")));
+        lblReserve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/printIco.png")));
     }//GEN-LAST:event_lblReserveMouseExited
     
     public void buttonGenerator(){
@@ -322,6 +334,7 @@ public class frmFunctions extends javax.swing.JFrame {
                
                else {
                    pnlSeats2.add(new javax.swing.JLabel(""));
+                   i--;
                }
                 seatCounter++;
         }
@@ -374,10 +387,11 @@ public class frmFunctions extends javax.swing.JFrame {
                          btn.setText("Reservado");
                          connect=new Connect();
                          connect.reserve(btn.getId());
+                         cost+= 35;
+                         lblCostAns.setText("$"+cost);
                     }
                     else{
                         btn.setBackground(new Color(29, 174, 51));
-                        
                         btn.setForeground(new Color(29, 114, 51));
                         btn.setText("Asiento "+btn.getId());
                         System.out.println(btn.getBackground());
@@ -394,6 +408,9 @@ public class frmFunctions extends javax.swing.JFrame {
     private Connect connect;
     private ArrayList<Button> buttonsArray;
     private final int totalButtons=29;
+    private int cost=0; 
+    public String movie;
+    private boolean firstTime=true;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -450,15 +467,13 @@ public class frmFunctions extends javax.swing.JFrame {
 //        } 
         
         
-        public void showGate(){
-        
-        }
+     
         
         public void reserve(int seat){
             try {
                myConn= DriverManager.getConnection(link, user, pass);
                 System.out.println("Conexión establecida");
-               String query="UPDATE back_to_the_future SET reserved='si' WHERE seat="+seat;
+               String query="UPDATE "+movie+" SET reserved='si' WHERE seat="+seat;
             myPS= myConn.prepareStatement(query);
             int x=myPS.executeUpdate();
             if(x>0) System.out.println("se actualizó");
@@ -482,7 +497,7 @@ public class frmFunctions extends javax.swing.JFrame {
             try {
                myConn= DriverManager.getConnection(link, user, pass);
                 System.out.println("Conexión establecida");
-               String query="UPDATE back_to_the_future SET reserved='no' WHERE seat="+seat;
+               String query="UPDATE "+movie+" SET reserved='no' WHERE seat="+seat;
             myPS= myConn.prepareStatement(query);
             int x=myPS.executeUpdate();
             if(x>0) System.out.println("se actualizó");
@@ -503,6 +518,53 @@ public class frmFunctions extends javax.swing.JFrame {
             
         }
         
+        public void update(){
+            
+            try {
+               myConn= DriverManager.getConnection(link, user, pass);
+                System.out.println("Conexión establecida");
+                
+               String query="SELECT seat, reserved FROM "+movie;
+            myPS= myConn.prepareStatement(query);
+            ResultSet myRs=myPS.executeQuery();
+            
+            int number;
+            String reserved;
+            while(myRs.next()){
+                number=myRs.getInt(1);
+                reserved=myRs.getString(2);
+                if(reserved.equals("si")){
+                    buttonsArray.get(number-1).setBackground(new Color(39,122,241));
+                    buttonsArray.get(number-1).setForeground(Color.blue);
+                    buttonsArray.get(number-1).setSelected(true);
+                    buttonsArray.get(number-1).setText("Reservado");
+                    
+                }else if (reserved.equals("no")){
+                    buttonsArray.get(number-1).setBackground(new Color(29, 174, 51));
+                    buttonsArray.get(number-1).setForeground(new Color(29, 114, 51));
+                    buttonsArray.get(number-1).setSelected(false);
+                    buttonsArray.get(number-1).setText("Asiento "+buttonsArray.get(number-1).getId());
+                    
+                }
+                
+            }
+            
+            
+                
+            }catch(SQLException ex){
+                System.out.println(ex);
+            }finally{
+                try {
+                    myConn.close();
+                    myPS.close();
+                    System.out.println("Conexion y Consulta cerrados");
+                } catch (SQLException ex) {
+                    Logger.getLogger(frmFunctions.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+        }
+        private frmFunctions frm;
         private PreparedStatement myPS;
         private Connection myConn;
         String user="ChecoDB", pass="ChecoReyes23", link="jdbc:mysql://localhost:3307/cinema";
