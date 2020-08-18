@@ -14,6 +14,11 @@ public class frmFunctions extends javax.swing.JFrame {
 
     public frmFunctions() {
         initComponents();
+        
+        this.setMinimumSize(dim);
+        setSize(dim);
+        
+        
         Image principalIco=Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Images/popcornIco.png"));
         setIconImage(principalIco);
         setTitle("RaíCinema");
@@ -29,14 +34,12 @@ public class frmFunctions extends javax.swing.JFrame {
         pnlBackg = new javax.swing.JPanel();
         lblTitle1 = new javax.swing.JLabel();
         lblInstructions1 = new javax.swing.JLabel();
-        lblInstructions3 = new javax.swing.JLabel();
         pnlFunctions = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstFunctions = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstSchedule = new javax.swing.JList<>();
         lblCheck = new javax.swing.JLabel();
-        lblInstructions2 = new javax.swing.JLabel();
         pnlConfirm = new javax.swing.JPanel();
         lblCost = new javax.swing.JLabel();
         lblCostAns = new javax.swing.JLabel();
@@ -61,11 +64,8 @@ public class frmFunctions extends javax.swing.JFrame {
 
         lblInstructions1.setFont(new java.awt.Font("Tahoma", 1, 21)); // NOI18N
         lblInstructions1.setForeground(new java.awt.Color(74, 44, 226));
-        lblInstructions1.setText("Por favor seleccione primero una función, ");
-
-        lblInstructions3.setFont(new java.awt.Font("Tahoma", 1, 21)); // NOI18N
-        lblInstructions3.setForeground(new java.awt.Color(74, 44, 226));
-        lblInstructions3.setText("para ver la disponibilidad de la sala");
+        lblInstructions1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblInstructions1.setText("<html>Por favor seleccione primero una función, un horario y pulse el botón para ver la disponibilidad de la sala</html>");
 
         pnlFunctions.setBackground(new java.awt.Color(39, 122, 241));
         pnlFunctions.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 44, 226), 2, true), "Funciones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18), new java.awt.Color(74, 44, 226))); // NOI18N
@@ -91,6 +91,12 @@ public class frmFunctions extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblCheckMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblCheckMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblCheckMouseExited(evt);
+            }
         });
 
         javax.swing.GroupLayout pnlFunctionsLayout = new javax.swing.GroupLayout(pnlFunctions);
@@ -115,10 +121,6 @@ public class frmFunctions extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(0, 12, Short.MAX_VALUE))
         );
-
-        lblInstructions2.setFont(new java.awt.Font("Tahoma", 1, 21)); // NOI18N
-        lblInstructions2.setForeground(new java.awt.Color(74, 44, 226));
-        lblInstructions2.setText("un horario y después pulse el botón");
 
         pnlConfirm.setBackground(new java.awt.Color(34, 122, 241));
         pnlConfirm.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 44, 226), 2, true), "Confirmación", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18), new java.awt.Color(74, 44, 226))); // NOI18N
@@ -149,6 +151,14 @@ public class frmFunctions extends javax.swing.JFrame {
         lblScheduleAns.setText("N/A");
 
         lblReserve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/reserveIco.png"))); // NOI18N
+        lblReserve.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblReserveMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblReserveMouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlConfirmLayout = new javax.swing.GroupLayout(pnlConfirm);
         pnlConfirm.setLayout(pnlConfirmLayout);
@@ -225,19 +235,9 @@ public class frmFunctions extends javax.swing.JFrame {
             pnlBackgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBackgLayout.createSequentialGroup()
                 .addComponent(lblTitle1)
-                .addGroup(pnlBackgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlBackgLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblInstructions1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pnlBackgLayout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addGroup(pnlBackgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlBackgLayout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(lblInstructions3))
-                            .addComponent(lblInstructions2))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(18, 18, 18)
+                .addComponent(lblInstructions1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
             .addGroup(pnlBackgLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlBackgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -250,18 +250,12 @@ public class frmFunctions extends javax.swing.JFrame {
         pnlBackgLayout.setVerticalGroup(
             pnlBackgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBackgLayout.createSequentialGroup()
-                .addGroup(pnlBackgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(pnlBackgLayout.createSequentialGroup()
-                        .addComponent(lblTitle1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(17, 17, 17))
+                .addGroup(pnlBackgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTitle1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlBackgLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(lblInstructions1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblInstructions2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblInstructions3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addComponent(lblInstructions1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addGroup(pnlBackgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlBackgLayout.createSequentialGroup()
                         .addComponent(pnlFunctions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -288,6 +282,22 @@ public class frmFunctions extends javax.swing.JFrame {
     private void lblCheckMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCheckMouseClicked
         System.out.println(buttonsArray.get(2).getBackground());
     }//GEN-LAST:event_lblCheckMouseClicked
+
+    private void lblCheckMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCheckMouseEntered
+        lblCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/roomIcoDark.png")));
+    }//GEN-LAST:event_lblCheckMouseEntered
+
+    private void lblCheckMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCheckMouseExited
+        lblCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/roomIco.png")));
+    }//GEN-LAST:event_lblCheckMouseExited
+
+    private void lblReserveMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblReserveMouseEntered
+        lblReserve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/reserveIcoDark.png")));
+    }//GEN-LAST:event_lblReserveMouseEntered
+
+    private void lblReserveMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblReserveMouseExited
+        lblReserve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/reserveIco.png")));
+    }//GEN-LAST:event_lblReserveMouseExited
     
     public void buttonGenerator(){
         int seatCounter=1;
@@ -367,6 +377,9 @@ public class frmFunctions extends javax.swing.JFrame {
         }
         
     }
+//    private java.awt.Dimension dim=new java.awt.Dimension(/*947*/1000, 650/*608*/);
+    private java.awt.Dimension dim=new java.awt.Dimension(967, 648);
+    
     private ArrayList<Button> buttonsArray;
     private final int totalButtons=29;
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -376,8 +389,6 @@ public class frmFunctions extends javax.swing.JFrame {
     private javax.swing.JLabel lblCost;
     private javax.swing.JLabel lblCostAns;
     private javax.swing.JLabel lblInstructions1;
-    private javax.swing.JLabel lblInstructions2;
-    private javax.swing.JLabel lblInstructions3;
     private javax.swing.JLabel lblMovie;
     private javax.swing.JLabel lblMovieAns;
     private javax.swing.JLabel lblReserve;
