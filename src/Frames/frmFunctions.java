@@ -5,16 +5,15 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 
@@ -22,17 +21,14 @@ public class frmFunctions extends javax.swing.JFrame {
 
     public frmFunctions() {
         initComponents();
+        toClose();
         this.setMinimumSize(dim);
         setSize(dim);
         Image principalIco=Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Images/popcornIco.png"));
         setIconImage(principalIco);
         setTitle("RaíCinema");
         setLocationRelativeTo(null);
-//        buttonGenerator();
-//        connect=new Connect();
-//        connect.update();
     }
-
  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -59,7 +55,7 @@ public class frmFunctions extends javax.swing.JFrame {
         lblScreen = new javax.swing.JLabel();
         pnlSeats2 = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(893, 575));
         setMinimumSize(new java.awt.Dimension(893, 575));
         setSize(new java.awt.Dimension(893, 575));
@@ -159,6 +155,9 @@ public class frmFunctions extends javax.swing.JFrame {
 
         lblReserve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/printIco.png"))); // NOI18N
         lblReserve.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblReserveMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lblReserveMouseEntered(evt);
             }
@@ -189,21 +188,21 @@ public class frmFunctions extends javax.swing.JFrame {
         pnlConfirmLayout.setVerticalGroup(
             pnlConfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlConfirmLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblMovie)
                 .addGap(33, 33, 33)
                 .addComponent(lblMovieAns)
-                .addGap(29, 29, 29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addComponent(lblSchedule)
-                .addGap(18, 27, Short.MAX_VALUE)
+                .addGap(27, 27, 27)
                 .addComponent(lblScheduleAns)
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(lblCost)
-                .addGap(18, 27, Short.MAX_VALUE)
+                .addGap(27, 27, 27)
                 .addComponent(lblCostAns)
-                .addGap(35, 35, 35)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(lblReserve)
-                .addGap(49, 49, 49))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         pnlSeats.setBackground(new java.awt.Color(39, 122, 241));
@@ -292,15 +291,12 @@ public class frmFunctions extends javax.swing.JFrame {
             lblMovieAns.setText(lstFunctions.getSelectedValue());
             lblScheduleAns.setText(lstSchedule.getSelectedValue());
             movie=((lstFunctions.getSelectedValue()).toLowerCase()).replace(" ", "_");
-//            System.out.println(movie);
             if(firstTime){
                 buttonGenerator();
                 firstTime=false;
             }
-            
             connect=new Connect();
             connect.update();
-            
         }
     }//GEN-LAST:event_lblCheckMouseClicked
 
@@ -319,6 +315,28 @@ public class frmFunctions extends javax.swing.JFrame {
     private void lblReserveMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblReserveMouseExited
         lblReserve.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/printIco.png")));
     }//GEN-LAST:event_lblReserveMouseExited
+
+    private void lblReserveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblReserveMouseClicked
+        if (lstFunctions.isSelectionEmpty() || lstSchedule.isSelectionEmpty() || lblCostAns.getText().equals("$00") ) JOptionPane.showMessageDialog(this,"Por favor seleccione una función y un horario","-- SIN DATOS --",2);
+        else {
+            new frmPrint(lblMovieAns.getText(),lblScheduleAns.getText(),lblCostAns.getText());
+            cost=0;
+            lblCostAns.setText("$"+cost);
+        }
+    }//GEN-LAST:event_lblReserveMouseClicked
+    
+    private void toClose(){
+        this.addWindowListener(new java.awt.event.WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+                int ans=JOptionPane.showConfirmDialog(null, "¿Seguro que deseas salir?", "Confirmación", 0,3);
+                if(ans==0) {
+                    new frmLogin().setVisible(true);
+                    dispose();
+                }
+                
+            }
+        });
+    }
     
     public void buttonGenerator(){
         int seatCounter=1;
@@ -345,8 +363,8 @@ public class frmFunctions extends javax.swing.JFrame {
        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-//                frmLogin.main(args);
-                new frmFunctions().setVisible(true);
+                frmLogin.main(args);
+//                new frmFunctions().setVisible(true);
             }
         });
     }
@@ -396,6 +414,11 @@ public class frmFunctions extends javax.swing.JFrame {
                         btn.setText("Asiento "+btn.getId());
                         System.out.println(btn.getBackground());
                         connect.liberate(btn.getId());
+                        if(cost!=0){
+                            cost-= 35;
+                        lblCostAns.setText("$"+cost);
+                        }
+                        
                     }
                     
                 }
@@ -434,53 +457,20 @@ public class frmFunctions extends javax.swing.JFrame {
     private javax.swing.JPanel pnlSeats2;
     // End of variables declaration//GEN-END:variables
 
-
-    
     public class Connect {
-        public Connect(){
-//            try {
-//                Connection myConn=DriverManager.getConnection(link, user, pass);
-//                String sentence="SELECT * FROM the_matrix WHERE seat=? ";
-//                PreparedStatement myPst=myConn.prepareStatement(sentence);
-//                myPst.setString(1,"30");
-//                myPst.setString(2, "no");
-//                ResultSet myRs=myPst.executeQuery();
-//                while(myRs.next()){
-//                    System.out.println(myRs.getString(1)+myRs.getString(2)+myRs.getString(3));
-//                }
-//                myRs.close();
-//                myConn.close();
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-        }
-//        public  Connection connect(){
-//             myConn=null;
-//            try {
-//               myConn= DriverManager.getConnection(link, user, pass);
-//                System.out.println("Conexión establecida");
-//                
-//            }catch(SQLException ex){
-//                
-//            }
-//            return myConn;
-//        } 
-        
-        
-     
-        
+       
         public void reserve(int seat){
             try {
                myConn= DriverManager.getConnection(link, user, pass);
                 System.out.println("Conexión establecida");
-               String query="UPDATE "+movie+" SET reserved='si' WHERE seat="+seat;
-            myPS= myConn.prepareStatement(query);
-            int x=myPS.executeUpdate();
-            if(x>0) System.out.println("se actualizó");
-            else System.out.println("Hubo un error al actualizar");
-                
+                String query="UPDATE "+movie+" SET reserved='si' WHERE seat="+seat;
+                myPS= myConn.prepareStatement(query);
+                int x=myPS.executeUpdate();
+                if(x>0) System.out.println("se actualizó");
+                else System.out.println("Hubo un error al actualizar");
             }catch(SQLException ex){
-                
+                JOptionPane.showMessageDialog(null, "Hubo un error al reservar");
+                System.out.println(ex);
             }finally{
                 try {
                     myConn.close();

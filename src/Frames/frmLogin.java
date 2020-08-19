@@ -9,19 +9,19 @@ import javax.swing.JOptionPane;
 public class frmLogin extends javax.swing.JFrame {
 
     public frmLogin() {
-        setUndecorated(true);
-        initComponents();
-        placeHolders();
-        Teclado kb =new Teclado();
-        fldUser.addKeyListener(kb);
+        setUndecorated(true);  //Elimina la barra de 'titulo' del jFrame
+        initComponents();      //Llamada a función
+        placeHolders();        //Llamada a función
+        Teclado kb =new Teclado();    //Instancia de la clase Teclado para ocuparla lineas abajo
+        fldUser.addKeyListener(kb);    //En estos jFields y jLabel se agrega el 'oyente de teclado'
         fldPass.addKeyListener(kb);
         lblHello.addKeyListener(kb);
-        setTitle("RaíCinema");
+        setTitle("RaíCinema");       //Establece el título de este jFrame
         Image principalIco=Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Images/popcornIco.png"));
-        setIconImage(principalIco);
-        setLocationRelativeTo(null);
-        lblHello.requestFocusInWindow();
-        setResizable(false);
+        setIconImage(principalIco);   //Establece el ícono del jFrame, mismo que se configura arriba 
+        setLocationRelativeTo(null);  //Establece la posición del jFrame en el centro gracias al 'null'
+        lblHello.requestFocusInWindow();   //Por estética, para que el cursor no aparezca en los jFields
+        setResizable(false);    //Imposibilita el ajuste de tamaño a este jFrame
     }
 
     @SuppressWarnings("unchecked")
@@ -67,11 +67,6 @@ public class frmLogin extends javax.swing.JFrame {
         fldUser.setForeground(new java.awt.Color(74, 44, 226));
         fldUser.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         fldUser.setBorder(null);
-        fldUser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fldUserActionPerformed(evt);
-            }
-        });
 
         lblHello.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         lblHello.setText("¡Hola, compañero!");
@@ -191,51 +186,44 @@ public class frmLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void fldUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fldUserActionPerformed
-    
-    }//GEN-LAST:event_fldUserActionPerformed
-
     private void lblBtnEnterMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBtnEnterMouseEntered
-        lblBtnEnter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/enterIcoDark.png")));
+        lblBtnEnter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/enterIcoDark.png"))); //Cambia el icono al pasar el mouse
     }//GEN-LAST:event_lblBtnEnterMouseEntered
 
     private void lblBtnEnterMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBtnEnterMouseExited
-        lblBtnEnter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/enterIco.png")));
+        lblBtnEnter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/enterIco.png")));  //Cambia el icono al pasar el mouse
     }//GEN-LAST:event_lblBtnEnterMouseExited
     
     private void lblTitleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTitleMousePressed
-        xpos=evt.getX();
+        xpos=evt.getX();  //Guarda la posición cuando se presiona antes de arrastrar
         ypos=evt.getY();
     }//GEN-LAST:event_lblTitleMousePressed
 
     private void lblTitleMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTitleMouseDragged
-       int x=evt.getXOnScreen();
+       int x=evt.getXOnScreen();    
        int y=evt.getYOnScreen();
-       this.setLocation(x-xpos-28, y-ypos-20); //Date 28 and 20 come from the approximation between the jlabel and the frame
+       this.setLocation(x-xpos-28, y-ypos-20); //El dato 28 y 20 vienen de la aproximación de la esquina del jLabel a la esquina del jFrame
     }//GEN-LAST:event_lblTitleMouseDragged
 
     private void lblBtnEnterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBtnEnterMouseClicked
-        validateLogin();
+        validateLogin();   
     }//GEN-LAST:event_lblBtnEnterMouseClicked
     
     private void validateLogin(){
-        String pass= new String(fldPass.getPassword());  //Obviously temporary
-        if(fldUser.getText().equals("Me")&&pass.equals("Me")){
-            new frmFunctions().setVisible(true);
-            this.dispose();
-        }else JOptionPane.showMessageDialog(this,"Error en usuario o contraseña","Error",0);
+        String pass= new String(fldPass.getPassword());  //Mala práctica, pero sirve a modo de ejemplo. 
+        if(fldUser.getText().equals("Me")&&pass.equals("Me")){  //Usuario y contraseña... Remember: la seguridad no es el fuerte de esta aplicación.
+            new frmFunctions().setVisible(true);  //Si el usuario y contraseña son correctos se inicializa el nuevo jFrame
+            this.dispose();    //Y se ocultan y liberan recursos de este jFrame
+        }else JOptionPane.showMessageDialog(this,"Error en usuario o contraseña","Error",0);   //Mensaje de error para user/pass incorrecto
     }
     
-    private void exit(){
-        System.exit(0);
-    }
     
     private void placeHolders(){
-        TextPrompt field1 =new TextPrompt("Usuario",fldUser);
+        TextPrompt field1 =new TextPrompt("Usuario",fldUser);  //La clase TextPrompt ayuda para poner placeHolders en ambos jFields
         TextPrompt field2 =new TextPrompt("Password",fldPass);
     }
     
-    public static void main(String args[]) {
+    public static void main(String args[]) {    //Función principal
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new frmLogin().setVisible(true);
@@ -259,19 +247,15 @@ public class frmLogin extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 }
 
-class Teclado extends KeyAdapter{
+    class Teclado extends KeyAdapter{   //Clase que 'escucha' el teclado
         public void keyPressed (KeyEvent tecla){
-        presionada=tecla.getKeyCode();
-            System.out.println(presionada);
-        if(presionada== KeyEvent.VK_ESCAPE){
-            System.exit(0);
-        }else if(tecla.isControlDown()&&presionada==KeyEvent.VK_H){
-            JOptionPane.showMessageDialog(null,"Lo sentimos. Sin usuario y/o contraseña deberás ponerte en contanto con el administrador del sistema"); 
-        }else{
-                       
+            presionada=tecla.getKeyCode();         //Así se guarda la tecla 'presionada'
+            if(presionada== KeyEvent.VK_ESCAPE){
+                System.exit(0);
+            }else if(tecla.isControlDown()&&presionada==KeyEvent.VK_H){
+                JOptionPane.showMessageDialog(null,"Lo sentimos. Sin usuario y/o contraseña deberás ponerte en contanto con el administrador del sistema","",1); 
+            }else{
+            }
         }
-        
-    }
         static int presionada;
-    
     }
