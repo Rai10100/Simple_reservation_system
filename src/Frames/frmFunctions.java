@@ -432,6 +432,7 @@ public class frmFunctions extends javax.swing.JFrame {
     private ArrayList<Button> buttonsArray;
     private final int totalButtons=29;
     private int cost=0; 
+    private static final long serialVersionUID = 1L;
     public String movie;
     private boolean firstTime=true;
     // Variables declaration - do not modify//GEN-BEGIN:variables

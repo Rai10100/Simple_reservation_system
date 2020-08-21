@@ -217,7 +217,6 @@ public class frmLogin extends javax.swing.JFrame {
         }else JOptionPane.showMessageDialog(this,"Error en usuario o contraseña","Error",0);   //Mensaje de error para user/pass incorrecto
     }
     
-    
     private void placeHolders(){
         TextPrompt field1 =new TextPrompt("Usuario",fldUser);  //La clase TextPrompt ayuda para poner placeHolders en ambos jFields
         TextPrompt field2 =new TextPrompt("Password",fldPass);
@@ -230,7 +229,7 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
     }
-    
+    private static final long serialVersionUID = 1L;
     private int xpos,ypos;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField fldPass;
@@ -252,7 +251,7 @@ public class frmLogin extends javax.swing.JFrame {
             presionada=tecla.getKeyCode();         //Así se guarda la tecla 'presionada'
             if(presionada== KeyEvent.VK_ESCAPE){
                 System.exit(0);
-            }else if(tecla.isControlDown()&&presionada==KeyEvent.VK_H){
+            }else if(tecla.isControlDown()&&presionada==KeyEvent.VK_H){ //isControlDown() es muy útil para combinaciones con CTRL
                 JOptionPane.showMessageDialog(null,"Lo sentimos. Sin usuario y/o contraseña deberás ponerte en contanto con el administrador del sistema","",1); 
             }else{
             }

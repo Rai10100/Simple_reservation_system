@@ -9,30 +9,28 @@ import static java.awt.print.Printable.PAGE_EXISTS;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 
-public class frmPrint extends javax.swing.JFrame implements Printable{
+public class frmPrint extends javax.swing.JFrame implements Printable{ //Printable es la interfaz que debe incluir la clase que quiera imprimir
 
     public frmPrint(String fx, String hr, String cs) {
         initComponents();
-        
-        this.fx=fx;
+        this.fx=fx;  //Estas variables se piden en el contructor para generar "boleto" adecuado para cada película.
         this.hr=hr;
         this.cs=cs;
-        System.out.println(this.cs);
         fill();
         try{
-            PrinterJob g=PrinterJob.getPrinterJob();
-            g.setPrintable(this);
+            PrinterJob g=PrinterJob.getPrinterJob();  //Se inicializa el objeto PrinterJob, que es el qu ese encarga de imprimir
+            g.setPrintable(this); //Renderiza el objeto, en este caso el jFrame 
 //          g.printDialog();
-            g.print();
+            g.print();   //Y lo imprime...
         }catch(PrinterException e){
             System.out.println("Error al imprimir: "+e);
         }
     }
-    public void fill(){
-    lblFunctionAns.setText(fx);
-    lblHourAns.setText(hr);
-    lblCostAns.setText(cs);
     
+    public void fill(){
+        lblFunctionAns.setText(fx);
+        lblHourAns.setText(hr);
+        lblCostAns.setText(cs);
     }
     
     @SuppressWarnings("unchecked")
@@ -147,7 +145,7 @@ public class frmPrint extends javax.swing.JFrame implements Printable{
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private static final long serialVersionUID = 1L;
     private String fx="null",hr="null",cs="null";
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblCost;
@@ -165,9 +163,9 @@ public class frmPrint extends javax.swing.JFrame implements Printable{
     public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
             if(pageIndex>0) return NO_SUCH_PAGE;
         else{
-            Graphics2D ar=(Graphics2D) graphics;
-            ar.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-            ar.scale(.7, .7);
+            Graphics2D ar=(Graphics2D) graphics;  //Objeto Graphics2D para ocuparlo abajo e imprimir el JFrame
+            ar.translate(pageFormat.getImageableX(), pageFormat.getImageableY());//Concatena con el punto superior izquierdo x & y para que sea el origen de la impresión
+            ar.scale(.7, .7);  //Para imprimir al 70% del tamaño original
             pnlPrint.printAll(ar);
             return PAGE_EXISTS;
         }
