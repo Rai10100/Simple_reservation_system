@@ -244,17 +244,20 @@ public class frmLogin extends javax.swing.JFrame {
     private javax.swing.JSeparator spr1;
     private javax.swing.JSeparator spr2;
     // End of variables declaration//GEN-END:variables
-}
 
-    class Teclado extends KeyAdapter{   //Clase que 'escucha' el teclado
+
+     class Teclado extends KeyAdapter{   //Clase que 'escucha' el teclado
         public void keyPressed (KeyEvent tecla){
             presionada=tecla.getKeyCode();         //Así se guarda la tecla 'presionada'
             if(presionada== KeyEvent.VK_ESCAPE){
                 System.exit(0);
             }else if(tecla.isControlDown()&&presionada==KeyEvent.VK_H){ //isControlDown() es muy útil para combinaciones con CTRL
                 JOptionPane.showMessageDialog(null,"Lo sentimos. Sin usuario y/o contraseña deberás ponerte en contanto con el administrador del sistema","",1); 
-            }else{
+            }else if (presionada== KeyEvent.VK_ENTER){
+                validateLogin();
             }
         }
-        static int presionada;
+         int presionada;
     }
+}
+

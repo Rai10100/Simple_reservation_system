@@ -18,7 +18,7 @@ public class frmPrint extends javax.swing.JFrame implements Printable{ //Printab
         this.cs=cs;
         fill();
         try{
-            PrinterJob g=PrinterJob.getPrinterJob();  //Se inicializa el objeto PrinterJob, que es el qu ese encarga de imprimir
+            PrinterJob g=PrinterJob.getPrinterJob();  //Se inicializa el objeto PrinterJob, que es el que ese encarga de imprimir
             g.setPrintable(this); //Renderiza el objeto, en este caso el jFrame 
 //          g.printDialog();
             g.print();   //Y lo imprime...

@@ -286,17 +286,18 @@ public class frmFunctions extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblCheckMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCheckMouseClicked
+        //Cambia los textos del panel y actualiza los asientos
         if (lstFunctions.isSelectionEmpty() || lstSchedule.isSelectionEmpty()) JOptionPane.showMessageDialog(this,"Por favor seleccione una función y un horario","-- SIN DATOS --",2);
         else {
             lblMovieAns.setText(lstFunctions.getSelectedValue());
             lblScheduleAns.setText(lstSchedule.getSelectedValue());
             movie=((lstFunctions.getSelectedValue()).toLowerCase()).replace(" ", "_");
             if(firstTime){
-                buttonGenerator();
+                buttonGenerator(); 
                 firstTime=false;
             }
             connect=new Connect();
-            connect.update();
+            connect.update();  //Para actualizar los asientos a los últimos cambios
         }
     }//GEN-LAST:event_lblCheckMouseClicked
 
@@ -317,6 +318,7 @@ public class frmFunctions extends javax.swing.JFrame {
     }//GEN-LAST:event_lblReserveMouseExited
 
     private void lblReserveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblReserveMouseClicked
+        //Crea un nuevo "boleto" y lo imprime
         if (lstFunctions.isSelectionEmpty() || lstSchedule.isSelectionEmpty() || lblCostAns.getText().equals("$00") ) JOptionPane.showMessageDialog(this,"Por favor seleccione una función y un horario","-- SIN DATOS --",2);
         else {
             new frmPrint(lblMovieAns.getText(),lblScheduleAns.getText(),lblCostAns.getText());
@@ -325,7 +327,7 @@ public class frmFunctions extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lblReserveMouseClicked
     
-    private void toClose(){
+    private void toClose(){ //Pide confirmación para cerrar la ventana
         this.addWindowListener(new java.awt.event.WindowAdapter(){
             public void windowClosing(WindowEvent e){
                 int ans=JOptionPane.showConfirmDialog(null, "¿Seguro que deseas salir?", "Confirmación", 0,3);
@@ -338,18 +340,16 @@ public class frmFunctions extends javax.swing.JFrame {
         });
     }
     
-    public void buttonGenerator(){
+    public void buttonGenerator(){  //Esté método "crea" objetos de tipo botón, definidos más abajo.
         int seatCounter=1;
         buttonsArray=new ArrayList<>();
         Button button;
         for(int i=1;i<totalButtons;i++){
-               if((seatCounter!=25)&&(seatCounter!=30)){
+               if((seatCounter!=25)&&(seatCounter!=30)){ //Para los espacios vacíos en la primera fila
                    button= new Button(i);
-                   
                    pnlSeats2.add(button);
                    buttonsArray.add(button);
                }
-               
                else {
                    pnlSeats2.add(new javax.swing.JLabel(""));
                    i--;
@@ -369,7 +369,7 @@ public class frmFunctions extends javax.swing.JFrame {
         });
     }
    
-    class Button extends JToggleButton{
+    class Button extends JToggleButton{  //Clase Botón. Aquí se modifican las características de los botones
         Action action=new Action();
         public Button(int id){
             this.id=id;
@@ -377,7 +377,6 @@ public class frmFunctions extends javax.swing.JFrame {
             this.setText("Asiento "+id);
             this.setBackground(new Color(29, 174, 51));
             this.setForeground(new Color(29, 114, 51));
-            //this.setBorderPainted(false);
             this.setFocusPainted(false);
             this.addActionListener(action);
         }
@@ -393,8 +392,8 @@ public class frmFunctions extends javax.swing.JFrame {
     private int id;
     }
     
-    public class Action implements java.awt.event.ActionListener {
-
+    public class Action implements java.awt.event.ActionListener {  //Clase que escucha que botón es pulsado desencadenando varias acciones
+   //Como cambiar el color del botón y actualizar la base.
         @Override
         public void actionPerformed(ActionEvent e) {
             for(Button btn: buttonsArray){
@@ -412,7 +411,6 @@ public class frmFunctions extends javax.swing.JFrame {
                         btn.setBackground(new Color(29, 174, 51));
                         btn.setForeground(new Color(29, 114, 51));
                         btn.setText("Asiento "+btn.getId());
-                        System.out.println(btn.getBackground());
                         connect.liberate(btn.getId());
                         if(cost!=0){
                             cost-= 35;
@@ -426,7 +424,6 @@ public class frmFunctions extends javax.swing.JFrame {
         }
         
     }
-//    private java.awt.Dimension dim=new java.awt.Dimension(/*947*/1000, 650/*608*/);
     private java.awt.Dimension dim=new java.awt.Dimension(967, 648);
     private Connect connect;
     private ArrayList<Button> buttonsArray;
@@ -458,12 +455,12 @@ public class frmFunctions extends javax.swing.JFrame {
     private javax.swing.JPanel pnlSeats2;
     // End of variables declaration//GEN-END:variables
 
-    public class Connect {
+    public class Connect {   //La clase que trabaja con las conexiones a la base de datos
        
-        public void reserve(int seat){
+        public void reserve(int seat){  //Método invocado cuando se quiere reservar
             try {
                myConn= DriverManager.getConnection(link, user, pass);
-                System.out.println("Conexión establecida");
+                System.out.println("Conexión establecida");   //Mensajes de consola para identificar errores.
                 String query="UPDATE "+movie+" SET reserved='si' WHERE seat="+seat;
                 myPS= myConn.prepareStatement(query);
                 int x=myPS.executeUpdate();
@@ -484,7 +481,7 @@ public class frmFunctions extends javax.swing.JFrame {
             }
             
         }
-        public void liberate(int seat){
+        public void liberate(int seat){  //Método invocado cuando se quiere liberar la mesa
             try {
                myConn= DriverManager.getConnection(link, user, pass);
                 System.out.println("Conexión establecida");
@@ -509,7 +506,7 @@ public class frmFunctions extends javax.swing.JFrame {
             
         }
         
-        public void update(){
+        public void update(){  //método que actualiza.
             
             try {
                myConn= DriverManager.getConnection(link, user, pass);
@@ -558,7 +555,7 @@ public class frmFunctions extends javax.swing.JFrame {
         private frmFunctions frm;
         private PreparedStatement myPS;
         private Connection myConn;
-        String user="ChecoDB", pass="ChecoReyes23", link="jdbc:mysql://localhost:3307/cinema";
+        String user="ChecoDB", pass="ChecoReyes23", link="jdbc:mysql://localhost:3307/cinema"; //Usuario y¨Pass mios
     }
     
 }
